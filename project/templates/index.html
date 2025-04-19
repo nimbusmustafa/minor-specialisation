@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Camera Stream and Prediction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 30px;
+        }
+        main {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            gap: 40px;
+        }
+        .camera-feed {
+            width: 90%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .camera-feed img {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .prediction-container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .prediction-container p {
+            font-size: 26px;
+            color: #4CAF50;
+            font-weight: bold;
+            margin-top: 10px;
+            word-wrap: break-word;
+        }
+        .mode-switch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .mode-switch form button {
+            background-color: #2196F3;
+        }
+        .mode-switch form button:hover {
+            background-color: #1976D2;
+        }
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        {% if mode == 'handwriting' %}
+            Handwritten Text Recognition
+        {% else %}
+            Hand Gesture Recognition
+        {% endif %}
+    </header>
+
+    <main>
+        <div class="camera-feed">
+            <h2>Phone Camera</h2>
+            <img src="{{ url_for('phone_feed') }}" alt="Phone Camera Feed" />
+        </div>
+
+        <div class="camera-feed">
+            <h2>Webcam</h2>
+            <img src="{{ url_for('webcam_feed') }}" alt="Webcam Feed" />
+        </div>
+
+        <div class="mode-switch">
+            <h2>Current Mode: {{ mode|capitalize }}</h2>
+
+            <form action="/switch_mode" method="post">
+                <button type="submit">Switch to {% if mode == 'handwriting' %}Gesture{% else %}Handwriting{% endif %} Mode</button>
+            </form>
+        </div>
+
+        <form action="/capture" method="post">
+            <button type="submit">Capture Image & Predict</button>
+        </form>
+
+        <div class="prediction-container">
+            <h2>Prediction</h2>
+            <p>{{ prediction }}</p>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 Recognition System | Mustafa
+    </footer>
+</body>
+</html>
