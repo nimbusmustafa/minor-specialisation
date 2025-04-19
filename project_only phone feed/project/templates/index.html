@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwriting and Gesture Recognition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .mode-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .capture-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            margin: 10px;
+        }
+        #prediction {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        #phoneFeed {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Handwriting and Gesture Recognition</h1>
+
+    <!-- Display phone stream -->
+    <h3>Phone Feed</h3>
+    <img id="phoneFeed" src="{{ url_for('phone_feed') }}" alt="Phone Stream" />
+
+    <div>
+        <!-- Switch Mode Button -->
+        <form method="POST" action="{{ url_for('switch_mode') }}">
+            <button type="submit" class="mode-button">Switch to {{ 'Gesture' if mode == 'handwriting' else 'Handwriting' }} Mode</button>
+        </form>
+
+        <!-- Capture Button -->
+        <form method="POST" action="{{ url_for('capture_from_phone') }}">
+            <button type="submit" class="capture-button">Capture and Predict</button>
+        </form>
+    </div>
+
+    <div id="prediction">
+        <h2>Prediction: </h2>
+        <p>{{ prediction }}</p>
+    </div>
+</div>
+
+</body>
+</html>
